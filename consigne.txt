@@ -1,0 +1,77 @@
+PROJET 11 – Réalisation de l'interface d'une boutique en ligne avec VueJS
+
+Dans ce projet il vous sera demandé de réaliser l'interface d'une boutique en ligne grâce à vueJS. Les données seront appellées d'une API et seront affichées sur le site. 
+
+Il devra être possible de faire 3 types de tri sur celle-ci. 
+	- Un tri sur le nom du produit grâce à un input de type texte. (1)
+	- Un tri sur les catégories grâce à un select. (2)
+	- Un tri sur les prix grâce à un un select. (3)
+	
+Il faudra que lors du clic sur le bouton ajouter au panier, le produit soit ajouté au panier.
+En cliquant sur l'icon du panier une modal devra s'ouvrir avec à l'intérieur tous les produits selectionnés ainsi que le total de celui-ci. Une fois dans le panier, les quantités seront modifiable grâce à des boutons + ou -. En modifiant les quantités le montant du panier devra alors être recalculé. 
+Un bouton supprimer permettra de retirer le produit du panier. 
+Une petite pastille contenant le nombre d'élements au panier devra apparaitre à partir du moment ou un produit a été ajouté au panier.
+
+Attention le but de ce projet est d'afficher les informations et leur traitement sans rechargement de la page.
+
+API à utiliser : 
+
+https://fakestoreapi.com/products
+
+Moteur de tri : 
+
+Les moteurs de tri ne sont pas cumulatifs
+
+(1) -  <input type="search" class="form-control" placeholder="Rechercher...">
+(2) -   <select class="form-control">
+			<option value="">Toutes les catégories</option>
+			<option value="men clothing">Vêtements pour Hommes</option>
+			<option value="women clothing">Vêtements pour Femmes</option>
+			<option value="jewelery">Bijoux</option>
+			<option value="electronics">Hi-tech</option>
+		</select>
+(3) -  <select class="form-control">
+			<option value="">Tous les prix</option>
+			<option value="10">Moins de 10€</option>
+			<option value="50">Entre de 10€ et 50€</option>
+			<option value="51">Entre de 50€ et 100€</option>
+			<option value="101">Supérieur 100€</option>
+		</select>
+
+
+Livrable attendu : 
+
+Votre code devra être versionné sur GitHub et en ligne
+Le travail se fera de manière individuelle.
+
+Options supplémentaires : 
+
+Vous pouvez générer une vue détail de chacun des produits au clic.
+Vous pouvez faire en sorte que les moteurs de recherche soient cumulatifs.
+Vous pourrez ajouter des animation grâce à vuetransition pour plus de dynamisme
+
+Ressources pour vous aider dans votre développement :
+
+https://vuejs.org/
+
+Date du projet : 
+Du 28/01/2021 au 05/02/2021
+
+Fonctionnement de l'API
+structure du JSON
+		id:1,
+                    title:'...',
+                    price:'...',
+                    category:'...',
+                    description:'...',
+                    image:'...'
+
+Catégories :
+[
+            "electronics",
+            "jewelery",
+            "men clothing",
+            "women clothing"
+            ]
+
+

@@ -5,13 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <link rel="stylesheet" href="https://bootswatch.com/4/cerulean/bootstrap.min.css">
     <link rel="stylesheet" href="public/css/style.css">
+    
     <title>Wesh - la Boutique qui déchire!!!!</title>
 </head>
 
 <body>
+<img src="public/images/wish-logo-800.png" alt="logo" style="height:50px; width:auto">
+<div class="container">
+<div class="row w-75">
+    <input type="search" id="search" class="form-control " placeholder="Rechercher...">
+    <select class="form-control" id="category">
+			<option value="">Toutes les catégories</option>
+			<option value="men clothing">Vêtements pour Hommes</option>
+			<option value="women clothing">Vêtements pour Femmes</option>
+			<option value="jewelery">Bijoux</option>
+			<option value="electronics">Hi-tech</option>
+		</select>
+    <select class="form-control" id="price">
+			<option value="">Tous les prix</option>
+			<option value="10">Moins de 10€</option>
+			<option value="50">Entre de 10€ et 50€</option>
+			<option value="51">Entre de 50€ et 100€</option>
+			<option value="101">Supérieur 100€</option>
+		</select>
+</div>
+
     <div id="app">
-        {{ message }}
+        <section v-if="errored">
+    <p>Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces informations pour le moment. Veuillez réessayer ultérieurement.</p>
+  </section>
+
+  <section v-else>
+    <div v-if="loading">Chargement...</div>
+
+    <div v-else>
+    
+    <div v-for="product in info">
+    {{product.title}}
+    {{product.price}}
+    {{product.category}}
+    <img v-bind:src = product.image  alt="toto" style="width:150px; height:auto">
+    </div>
+      
+    </div>
+
+  </section>
+  
+    </div>
     </div>
 </body>
 <script src="main.js"></script>

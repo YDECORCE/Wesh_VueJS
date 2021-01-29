@@ -1,0 +1,28 @@
+.card{
+    background-color: wheat;
+    border : 1px solid;
+    height: 50vh
+}
+.title{
+    color: grey;
+    font-weight:bold;
+    text-align:start;
+    padding-left:10px;
+    font-size: 1.2rem;
+
+}
+.price{
+    color:blue;
+    font-weight:bold;
+    text-align:end;
+    padding-right:10px;
+    font-size: 1.5rem;
+}
+.image{
+   min-height: 20vh;
+   
+}
+.cardover{
+    background-color :rgba(0, 0, 241, 0.5);
+    position:absolute;
+}

@@ -2,55 +2,118 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <link rel="stylesheet" href="public/css/style.css">
-    
-    <title>Wesh - la Boutique qui déchire!!!!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script src="https://kit.fontawesome.com/73ba95509c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="public/css/style.css">
+
+  <title>Wesh - la Boutique qui déchire!!!!</title>
 </head>
 
 <body>
-<img src="public/images/wish-logo-800.png" alt="logo" style="height:50px; width:auto">
-<div class="container">
-<div class="row w-75">
-    <input type="search" id="search" class="form-control " placeholder="Rechercher...">
-    <select class="form-control" id="category">
-			<option value="">Toutes les catégories</option>
-			<option value="men clothing">Vêtements pour Hommes</option>
-			<option value="women clothing">Vêtements pour Femmes</option>
-			<option value="jewelery">Bijoux</option>
-			<option value="electronics">Hi-tech</option>
-		</select>
-    <select class="form-control" id="price">
-			<option value="">Tous les prix</option>
-			<option value="10">Moins de 10€</option>
-			<option value="50">Entre de 10€ et 50€</option>
-			<option value="51">Entre de 50€ et 100€</option>
-			<option value="101">Supérieur 100€</option>
-		</select>
-</div>
+  <div id="app">
 
-    <div id="app">
-        <section v-if="errored">
-    <p>Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces informations pour le moment. Veuillez réessayer ultérieurement.</p>
-  </section>
 
-  <section v-else>
-    <div v-if="loading">Chargement...</div>
+    <div class="container">
+      <div class="row justify-content-between py-5 header">
+        <img src="public/images/wish-logo-800.png" alt="logo" style="height:50px; width:auto">
+        <div style="font-size:2rem; color:grey" @click="showcart">
+          <div id="carticon" class="cartsize" style="display: none">{{counter}}</div>
+          <i class="fas fa-shopping-basket"></i>
+        </div>
+      </div>
+      <div class="row">
+        <input type="search" id="search" class="form-control " placeholder="Rechercher...">
+        <select class="form-control" id="category">
+          <option value="">Toutes les catégories</option>
+          <option value="men clothing">Vêtements pour Hommes</option>
+          <option value="women clothing">Vêtements pour Femmes</option>
+          <option value="jewelery">Bijoux</option>
+          <option value="electronics">Hi-tech</option>
+        </select>
+        <select class="form-control" id="price">
+          <option value="">Tous les prix</option>
+          <option value="10">Moins de 10€</option>
+          <option value="50">Entre de 10€ et 50€</option>
+          <option value="51">Entre de 50€ et 100€</option>
+          <option value="101">Supérieur 100€</option>
+        </select>
+      </div>
+      <section v-if="errored">
+        <p>Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces informations pour le moment. Veuillez
+          réessayer ultérieurement.</p>
+      </section>
 
-    <div v-else>
-    
+      <section v-else>
+        <div v-if="loading">Chargement...</div>
+
+        <div v-else>
+          <div id="cards" class="row w-100">
+            <div v-for="(product, index) in info" class="col-12 col-sm-6 col-lg-3 p-2">
+
+              <div v-bind:id="'card'+index" class="card" @mouseover="mouseover(index)" @mouseout="mouseout(index)">
+                <div class="image">
+                  <img v-bind:src=product.image alt="image" style="max-width:80%; height:80%">
+                </div>
+                <div class="title">{{product.title}}</div>
+                <div class="price">{{product.price + " €"}}</div>
+
+                <div v-bind:id="'button'+index" class="cardover" style="display:none">
+                  <button class="add" @click="addtocart(index)"> Ajout au panier </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div id="panier" class="modal" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">le <span style="color:rgb(46,183,235);font-weight:bolder">Wesh</span> panier</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hidecart">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div v-if="counter>0">
+                <table style="width:100%">
+                  <thead>
+                    <th scope="col" style="width:60%">Produit</th>
+                    <th scope="col" style="width:30%">Quantité</th>
+                    <th scope="col" style="width:10%">Prix</th>
+                  </thead>
+                  <tbody v-for="(list, index) in cart">
+                    <td>{{list.name | subStr}}</td>
+                    <td>
+                      <i class="far fa-plus-square" @click="moreproduct(index)"></i>
+                      <input v-model.number="list.quantity" style="width:45px">
+                      <i class="far fa-minus-square" @click="lessproduct(index)"></i>
+                      <span style="color:red"><i class="fas fa-trash-alt" @click="removeproduct(index)"></i></span>
+                    </td>
+                    <td>{{list.price + "€" }}</td>
+                  </tbody>
+                </table>
+              </div>
+              <div v-else> Votre panier est vide</div>
+
+            </div>
+            <div class="modal-footer">
+              <p>Total : <span style="color:rgb(46,183,235);font-weight:bolder">{{ total + "€" }}</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-  </section>
-  
-    </div>
-    </div>
 
-    
 </body>
 <script src="main.js"></script>
+
 </html>

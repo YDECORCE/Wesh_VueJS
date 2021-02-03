@@ -11,6 +11,7 @@ let products = new Vue({
       pricefilter:"",
       categoryfilter:"",
       search:"",
+      
     }
   },
   computed: {
@@ -61,6 +62,9 @@ let products = new Vue({
       else {
         return 0
       }
+    },
+    numbersofproducts(){
+      return this.sortedArray.length
     }
   },
 

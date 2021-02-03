@@ -75,7 +75,6 @@ let products = new Vue({
     },
     addtocart(index) {
       this.cart.push({
-        id: index,
         name: this.info[index].title,
         price: this.info[index].price,
         picture: this.info[index].image,
@@ -89,7 +88,6 @@ let products = new Vue({
     showcart() {
       const panier = document.getElementById("panier")
       panier.style.display = "block"
-
     },
     hidecart() {
       const panier = document.getElementById("panier")
@@ -108,8 +106,8 @@ let products = new Vue({
         this.removeproduct(index)
       } else {
         this.cart[index].quantity = newquantity
-      }
-      localStorage.setItem('panier', JSON.stringify(this.cart))
+        localStorage.setItem('panier', JSON.stringify(this.cart))
+      } 
     },
     removeproduct(index) {
       this.cart.splice(index, 1)
@@ -130,7 +128,7 @@ let products = new Vue({
     subStr50: function (string) {
       if(string.length>50){
       return string.substring(0, 50) + '...';}
-      else{ return string}
+      else{ return string }
     }
   },
   mounted() {

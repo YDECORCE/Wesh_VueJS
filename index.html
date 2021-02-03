@@ -19,40 +19,51 @@
 
 
     <div class="container">
-      <div class="row justify-content-between py-5 header">
-        <img src="public/images/wish-logo-800.png" alt="logo" style="height:50px; width:auto">
-        <div style="font-size:2rem; color:grey" @click="showcart">
-          <div id="carticon" class="cartsize" style="display: none">{{counter}}</div>
-          <i class="fas fa-shopping-basket"></i>
+      <!-- Header contenant, logo, panier et filtre -->
+      <div class="row pb-5 header">
+        <div class="row w-100 justify-content-between m-3">
+          <img src="public/images/wish-logo-800.png" alt="logo" style="height:50px; width:auto">
+          <div style="font-size:2rem; color:grey" @click="showcart">
+            <div id="carticon" class="cartsize" style="display: none">{{counter}}</div>
+            <i class="fas fa-shopping-basket"></i>
+          </div>
+        </div>
+        <!-- les inputs de tri -->
+        <div class="row w-100 justify-content-between mx-3">
+          <div class="col-12 col-sm-12 col-lg-4 ">
+          <input type="search" id="search" class="form-control " placeholder="Rechercher..." v-model="search">
+        </div>
+        <div class="col-12 col-sm-12 col-lg-4 ">
+          <select class="form-control" id="category" placeholder="filtrer par catégories" v-model="categoryfilter">
+            <option value="">Toutes les catégories</option>
+            <option value="men clothing">Vêtements pour Hommes</option>
+            <option value="women clothing">Vêtements pour Femmes</option>
+            <option value="jewelery">Bijoux</option>
+            <option value="electronics">Hi-tech</option>
+          </select>
+        </div>
+          <div class="col-12 col-sm-12 col-lg-4">
+          <select class="form-control" id="price" placeholder="filtrer par prix" v-model="pricefilter">
+            <option value="">Tous les prix</option>
+            <option value="10">Moins de 10€</option>
+            <option value="50">Entre de 10€ et 50€</option>
+            <option value="51">Entre de 50€ et 100€</option>
+            <option value="101">Supérieur 100€</option>
+          </select>
+        </div>
         </div>
       </div>
-      <div class="row">
-        <input type="search" id="search" class="form-control " placeholder="Rechercher..." v-model="search">
-        <select class="form-control" id="category" placeholder="filtrer par catégories" v-model="categoryfilter">
-          <option value="">Toutes les catégories</option>
-          <option value="men clothing">Vêtements pour Hommes</option>
-          <option value="women clothing">Vêtements pour Femmes</option>
-          <option value="jewelery">Bijoux</option>
-          <option value="electronics">Hi-tech</option>
-        </select>
-        <select class="form-control" id="price" placeholder="filtrer par prix"  v-model="pricefilter">
-          <option value="">Tous les prix</option>
-          <option value="10">Moins de 10€</option>
-          <option value="50">Entre de 10€ et 50€</option>
-          <option value="51">Entre de 50€ et 100€</option>
-          <option value="101">Supérieur 100€</option>
-        </select>
-      </div>
+      <!-- section d'affichage des données test d'erreur de changement de l'API -->
       <section v-if="errored">
         <p>Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces informations pour le moment. Veuillez
           réessayer ultérieurement.</p>
       </section>
-
+      <!-- section d'affichage des données Pas d'erreur de changement de l'API , chargement en cours-->
       <section v-else>
         <div v-if="loading">Chargement...</div>
-
+        <!-- section d'affichage des données Pas d'erreur de changement de l'API , chargement fini, affichage des données-->
         <div v-else>
-          <div id="cards" class="row w-100">
+          <div id="cards" class="row w-100 mx-0">
             <div v-for="(product, index) in sortedArray" class="col-12 col-sm-6 col-lg-3 p-2">
 
               <div v-bind:id="'card'+index" class="card" @mouseover="mouseover(index)" @mouseout="mouseout(index)">
@@ -61,7 +72,7 @@
                 </div>
                 <div class="title">{{product.title | subStr50}}</div>
                 <div class="price">{{product.price + " €"}}</div>
-
+                <!-- effet over  avec bouton ajouter au panier pour chaque produit en display none par défaut -->
                 <div v-bind:id="'button'+index" class="cardover" style="display:none">
                   <button class="add" @click="addtocart(index)"> Ajout au panier </button>
                 </div>
@@ -71,6 +82,7 @@
           </div>
         </div>
       </section>
+      <!-- Modal panier en display none par défaut, affichée quand on clique sur le panier -->
       <div id="panier" class="modal" tabindex="-1" role="dialog" style="display: none;">
         <div class="modal-dialog" role="document">
           <div class="modal-content">

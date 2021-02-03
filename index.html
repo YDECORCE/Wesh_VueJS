@@ -27,15 +27,15 @@
         </div>
       </div>
       <div class="row">
-        <input type="search" id="search" class="form-control " placeholder="Rechercher...">
-        <select class="form-control" id="category">
+        <input type="search" id="search" class="form-control " placeholder="Rechercher..." v-model="search">
+        <select class="form-control" id="category" placeholder="filtrer par catégories" v-model="categoryfilter">
           <option value="">Toutes les catégories</option>
           <option value="men clothing">Vêtements pour Hommes</option>
           <option value="women clothing">Vêtements pour Femmes</option>
           <option value="jewelery">Bijoux</option>
           <option value="electronics">Hi-tech</option>
         </select>
-        <select class="form-control" id="price">
+        <select class="form-control" id="price" placeholder="filtrer par prix"  v-model="pricefilter">
           <option value="">Tous les prix</option>
           <option value="10">Moins de 10€</option>
           <option value="50">Entre de 10€ et 50€</option>
@@ -53,13 +53,13 @@
 
         <div v-else>
           <div id="cards" class="row w-100">
-            <div v-for="(product, index) in info" class="col-12 col-sm-6 col-lg-3 p-2">
+            <div v-for="(product, index) in sortedArray" class="col-12 col-sm-6 col-lg-3 p-2">
 
               <div v-bind:id="'card'+index" class="card" @mouseover="mouseover(index)" @mouseout="mouseout(index)">
                 <div class="image">
                   <img v-bind:src=product.image alt="image" style="max-width:80%; height:80%">
                 </div>
-                <div class="title">{{product.title}}</div>
+                <div class="title">{{product.title | subStr50}}</div>
                 <div class="price">{{product.price + " €"}}</div>
 
                 <div v-bind:id="'button'+index" class="cardover" style="display:none">
@@ -89,7 +89,7 @@
                     <th scope="col" style="width:10%">Prix</th>
                   </thead>
                   <tbody v-for="(list, index) in cart">
-                    <td>{{list.name | subStr}}</td>
+                    <td>{{list.name | subStr30}}</td>
                     <td>
                       <i class="far fa-plus-square" @click="moreproduct(index)"></i>
                       <input v-model.number="list.quantity" style="width:45px">

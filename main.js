@@ -8,10 +8,48 @@ let products = new Vue({
       errored: false,
       cart: [],
       counter: 0,
-
+      pricefilter:"",
+      categoryfilter:"",
+      search:"",
     }
   },
   computed: {
+    sortedArray(){
+        let tempInfo=this.info
+        if (this.search != '' && this.search) {
+          tempInfo = tempInfo.filter((item) => {
+            return item.title
+              .toUpperCase()
+              .includes(this.search.toUpperCase())
+            })
+        }
+        if(this.categoryfilter !="" && this.categoryfilter){
+          tempInfo = tempInfo.filter((item) => {
+            return (item.category===this.categoryfilter)
+          })
+        }
+        if(this.pricefilter !="" && this.pricefilter){
+          tempInfo = tempInfo.filter((item) => {
+            switch (this.pricefilter){
+              case "10":
+                return (item.price < 10);
+                
+              case "50":
+                return (item.price>=10 && item.price<50);
+                
+              case "51":
+                return (item.price>=50 && item.price<100);
+                
+              case "101":
+                return (item.price >= 100);
+                              
+              default:
+                return tempInfo;   
+            }
+          })
+        }
+      return tempInfo
+    },
     total() {
       if (this.counter > 0) {
         let somme = 0
@@ -67,8 +105,7 @@ let products = new Vue({
       let oldquantity = this.cart[index].quantity
       let newquantity = oldquantity - 1
       if (newquantity === 0) {
-        this.cart.splice(index, 1)
-        this.counter = this.cart.length
+        this.removeproduct(index)
       } else {
         this.cart[index].quantity = newquantity
       }
@@ -79,6 +116,7 @@ let products = new Vue({
       this.counter = this.cart.length
       if (this.counter === 0) {
         localStorage.removeItem('panier');
+        document.getElementById("carticon").style.display = "none"
       } else {
         localStorage.setItem('panier', JSON.stringify(this.cart))
       }
@@ -86,10 +124,14 @@ let products = new Vue({
   },
   filters: {
 
-    subStr: function (string) {
+    subStr30: function (string) {
       return string.substring(0, 30) + '...';
+    },
+    subStr50: function (string) {
+      if(string.length>50){
+      return string.substring(0, 50) + '...';}
+      else{ return string}
     }
-
   },
   mounted() {
     if (localStorage.getItem('panier')) {

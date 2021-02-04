@@ -7,10 +7,13 @@ let products = new Vue({
       loading: true,
       errored: false,
       cart: [],
+      product:[],
       counter: 0,
       pricefilter:"",
       categoryfilter:"",
       search:"",
+      inpageproduct: true,
+      idproduct:"",
       
     }
   },
@@ -19,9 +22,11 @@ let products = new Vue({
         let tempInfo=this.info
         if (this.search != '' && this.search) {
           tempInfo = tempInfo.filter((item) => {
-            return item.title
+            return ((item.title
               .toUpperCase()
-              .includes(this.search.toUpperCase())
+              .includes(this.search.toUpperCase()))||(item.description
+                .toUpperCase()
+                .includes(this.search.toUpperCase())))
             })
         }
         if(this.categoryfilter !="" && this.categoryfilter){
@@ -77,12 +82,12 @@ let products = new Vue({
       const card = document.getElementById('button' + index)
       card.style.display = "none"
     },
-    addtocart(index) {
+    addtocart(index,quantity) {
       this.cart.push({
-        name: this.info[index].title,
-        price: this.info[index].price,
-        picture: this.info[index].image,
-        quantity: 1
+        name: this.sortedArray[index].title,
+        price: this.sortedArray[index].price,
+        picture: this.sortedArray[index].image,
+        quantity: quantity
       })
       localStorage.setItem('panier', JSON.stringify(this.cart))
       this.counter = this.cart.length
@@ -123,6 +128,19 @@ let products = new Vue({
         localStorage.setItem('panier', JSON.stringify(this.cart))
       }
     },
+    Productdetail(index){
+      this.product=[]
+      this.idproduct=""
+      this.idproduct=index
+      this.inpageproduct=false
+      this.product.push(this.sortedArray[index])
+
+    },
+    backtolist(){
+      this.inpageproduct=true
+      this.product=[]
+      this.idproduct=""
+    }
   },
   filters: {
 

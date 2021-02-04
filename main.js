@@ -14,6 +14,7 @@ let products = new Vue({
       search:"",
       inpageproduct: true,
       idproduct:"",
+      productquantity:1,
       
     }
   },
@@ -91,6 +92,7 @@ let products = new Vue({
       })
       localStorage.setItem('panier', JSON.stringify(this.cart))
       this.counter = this.cart.length
+      this.productquantity=1
       let carticon = document.getElementById("carticon")
       carticon.style.display = "block"
     },

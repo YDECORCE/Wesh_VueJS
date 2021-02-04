@@ -63,6 +63,7 @@
         <div v-if="loading">Chargement...</div>
         <!-- section d'affichage des données Pas d'erreur de changement de l'API , chargement fini, affichage des données-->
         <div v-else>
+          <!-- affichage du catalogue -->
           <template v-if="inpageproduct">
           <!-- test sur le nombre de produits à afficher -->
           <section v-if="numbersofproducts>0">
@@ -90,31 +91,33 @@
             <p> Pas de produit pour votre sélection</p>
           </section>
           </template>
+          <!-- affichage du détail produit -->
           <template v-else>
-            <div class="row" style="flex-direction:column">
+            <div class="row productroot" style="flex-direction:column">
               <div><a href="#" @click="categoryfilter='';inpageproduct=true">Catalogue</a>/<a href="#" @click="categoryfilter=product[0].category;inpageproduct=true">{{product[0].category}}</a>/{{ product[0].title}}</div>
               <div><a href="#" @click="backtolist">Retour</a></div>
             </div>
-            <div class="row">
-              <div class="col-12 col-sm-6">
-                <img v-bind:src=product[0].image alt="image" class="img-fluid">
+            <div class="row mt-3">
+              <div class="col-12 col-sm-6 px-5" style="max-height:70vh; text-align:center">
+                <img v-bind:src=product[0].image alt="image" style="width:inherit">
               </div>
               <div class="col-12 col-sm-6">
                 <h2>{{ product[0].title}}</h2>
-                <p>{{ product[0].description}}</p>
-                <h5>{{ product[0].price}}</h5>
-                
-                <i class="far fa-plus-square" ></i>
-                      <input  style="width:45px">
-                  <i class="far fa-minus-square"></i>
-                <button class="btn" @click="addtocart(idproduct,1)">Ajouter au panier</button>
+                <p style="min-height:30vh">{{ product[0].description}}</p>
+                <h5 class="price">{{ product[0].price +" €"}}</h5>
+                <div>
+                <p style="margin-bottom:0px">Quantité</p>
+                <i class="far fa-plus-square" @click="productquantity++"></i>
+                <input  v-model.number="productquantity" style="width:45px">
+                <i class="far fa-minus-square" @click="if(productquantity>0)productquantity--"></i>
+                <button class="btn" @click="addtocart(idproduct,productquantity)">Ajouter au panier</button>
+                </div>
               </div>
-            </div>
-                                
-            
+            </div>             
           </template>
         </div>
       </section>
+      <section id="Cartmodal">
       <!-- Modal panier en display none par défaut, affichée quand on clique sur le panier -->
       <div id="panier" class="modal" tabindex="-1" role="dialog" style="display: none;">
         <div class="modal-dialog" role="document">
@@ -154,6 +157,7 @@
           </div>
         </div>
       </div>
+    </section>
     </div>
   </div>
 

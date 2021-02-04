@@ -80,3 +80,17 @@
     color:rgb(46,183,235);
     border:solid 1px rgb(46,183,235);
 }
+h2{
+    color: grey;
+    font-weight:bold;
+    margin-bottom: 30px;
+   
+}
+.productroot{
+    color:grey;
+    
+}
+a, a:hover{
+    color:grey;
+    text-decoration: none;
+}

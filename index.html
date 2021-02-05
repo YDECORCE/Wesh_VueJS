@@ -64,104 +64,120 @@
         <!-- section d'affichage des données Pas d'erreur de changement de l'API , chargement fini, affichage des données-->
         <div v-else>
           <!-- affichage du catalogue -->
-          <template v-if="inpageproduct">
-          <!-- test sur le nombre de produits à afficher -->
-          <section v-if="numbersofproducts>0">
-            <div id="cards" class="row w-100 mx-0">
 
-              <div v-for="(product, index) in sortedArray" class="col-12 col-sm-6 col-lg-3 p-2">
+          <transition-group name="fade" mode="out-in" :duration="{ enter: 1000, leave: 500 }">
 
-                <div v-bind:id="'card'+index" class="card" @mouseover="mouseover(index)" @mouseout="mouseout(index)">
-                  <div class="image p-3">
-                    <img v-bind:src=product.image alt="image" style="max-width:80%; height:80%">
+            <template v-if="inpageproduct">
+              <!-- test sur le nombre de produits à afficher -->
+              <div v-bind:key="1">
+               <section v-if="numbersofproducts>0">
+                  <div id="cards" class="row w-100 mx-0">
+
+                    <div v-for="(product, index) in sortedArray" class="col-12 col-sm-6 col-lg-3 p-2">
+
+                      <div v-bind:id="'card'+index" class="card" @mouseover="mouseover(index)"
+                        @mouseout="mouseout(index)">
+                        <div class="image p-3">
+                          <img v-bind:src=product.image alt="image" style="max-width:80%; height:80%">
+                        </div>
+                        <div class="title">{{product.title | subStr50}}</div>
+                        <div class="price">{{product.price + " €"}}</div>
+                        <!-- effet over  avec bouton ajouter au panier pour chaque produit en display none par défaut -->
+                        <div v-bind:id="'button'+index" class="cardover" style="display:none">
+                          <button class="btn add" @click="addtocart(index,1)"> Ajout au panier </button>
+                          <button class="btn add2" @click="Productdetail(index)"> Détails </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="title">{{product.title | subStr50}}</div>
-                  <div class="price">{{product.price + " €"}}</div>
-                  <!-- effet over  avec bouton ajouter au panier pour chaque produit en display none par défaut -->
-                  <div v-bind:id="'button'+index" class="cardover" style="display:none" >
-                    <button class="btn add" @click="addtocart(index,1)"> Ajout au panier </button>
-                    <button class="btn add2" @click="Productdetail(index)"> Détails </button>
+                </section>
+                <!-- si pas de produit à afficher -->
+                <section v-else>
+                  <p> Pas de produit pour votre sélection</p>
+                </section>
+             </div>
+            </template>
+
+            <!-- affichage du détail produit -->
+
+            <template v-else>
+              <section v-bind:key="2"> 
+              <div class="row productroot" style="flex-direction:column">
+                <div><a href="#" @click="categoryfilter='';inpageproduct=true">Catalogue</a>/<a href="#"
+                    @click="categoryfilter=product[0].category;inpageproduct=true">{{product[0].category}}</a>/{{ product[0].title}}
+                </div>
+                <div><a href="#" @click="backtolist">Retour</a></div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12 col-sm-6 px-5" style="max-height:70vh; text-align:center">
+                  <img v-bind:src=product[0].image alt="image" style="width:inherit">
+                </div>
+                <div class="col-12 col-sm-6">
+                  <h2>{{ product[0].title}}</h2>
+                  <p style="min-height:30vh">{{ product[0].description}}</p>
+                  <h5 class="price">{{ product[0].price +" €"}}</h5>
+                  <div>
+                    <p style="margin-bottom:0px">Quantité</p>
+                    <i class="far fa-plus-square" @click="productquantity++"></i>
+                    <input v-model.number="productquantity" style="width:45px">
+                    <i class="far fa-minus-square" @click="if(productquantity>0)productquantity--"></i>
+                    <button class="btn" @click="addtocart(idproduct,productquantity)">Ajouter au panier</button>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-          <!-- si pas de produit à afficher -->
-          <section v-else>
-            <p> Pas de produit pour votre sélection</p>
-          </section>
-          </template>
-          <!-- affichage du détail produit -->
-          <template v-else>
-            <div class="row productroot" style="flex-direction:column">
-              <div><a href="#" @click="categoryfilter='';inpageproduct=true">Catalogue</a>/<a href="#" @click="categoryfilter=product[0].category;inpageproduct=true">{{product[0].category}}</a>/{{ product[0].title}}</div>
-              <div><a href="#" @click="backtolist">Retour</a></div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-12 col-sm-6 px-5" style="max-height:70vh; text-align:center">
-                <img v-bind:src=product[0].image alt="image" style="width:inherit">
-              </div>
-              <div class="col-12 col-sm-6">
-                <h2>{{ product[0].title}}</h2>
-                <p style="min-height:30vh">{{ product[0].description}}</p>
-                <h5 class="price">{{ product[0].price +" €"}}</h5>
-                <div>
-                <p style="margin-bottom:0px">Quantité</p>
-                <i class="far fa-plus-square" @click="productquantity++"></i>
-                <input  v-model.number="productquantity" style="width:45px">
-                <i class="far fa-minus-square" @click="if(productquantity>0)productquantity--"></i>
-                <button class="btn" @click="addtocart(idproduct,productquantity)">Ajouter au panier</button>
-                </div>
-              </div>
-            </div>             
-          </template>
+            </section>
+            </template>
+          </transition-group>
+
         </div>
       </section>
       <section id="Cartmodal">
-      <!-- Modal panier en display none par défaut, affichée quand on clique sur le panier -->
-      <div id="panier" class="modal" tabindex="-1" role="dialog" style="display: none;">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">le <span style="color:rgb(46,183,235);font-weight:bolder">Wesh</span> panier</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hidecart">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div v-if="counter>0">
-                <table style="width:100%">
-                  <thead>
-                    <th scope="col" style="width:60%">Produit</th>
-                    <th scope="col" style="width:30%">Quantité</th>
-                    <th scope="col" style="width:10%">Prix</th>
-                  </thead>
-                  <tbody v-for="(list, index) in cart">
-                    <td>{{list.name | subStr30}}</td>
-                    <td>
-                      <i class="far fa-plus-square" @click="moreproduct(index)"></i>
-                      <input v-model.number="list.quantity" style="width:45px">
-                      <i class="far fa-minus-square" @click="lessproduct(index)"></i>
-                      <span style="color:red"><i class="fas fa-trash-alt" @click="removeproduct(index)"></i></span>
-                    </td>
-                    <td>{{list.price + "€" }}</td>
-                  </tbody>
-                </table>
+        <!-- Modal panier en display none par défaut, affichée quand on clique sur le panier -->
+        <div id="panier" class="modal" tabindex="-1" role="dialog" style="display: none;">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">le <span style="color:rgb(46,183,235);font-weight:bolder">Wesh</span> panier
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hidecart">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
-              <div v-else> Votre panier est vide</div>
+              <div class="modal-body">
+                <div v-if="counter>0">
+                  <table style="width:100%">
+                    <thead>
+                      <th scope="col" style="width:60%">Produit</th>
+                      <th scope="col" style="width:30%">Quantité</th>
+                      <th scope="col" style="width:10%">Prix</th>
+                    </thead>
+                    <tbody v-for="(list, index) in cart">
+                      <td>{{list.name | subStr30}}</td>
+                      <td>
+                        <i class="far fa-plus-square" @click="moreproduct(index)"></i>
+                        <input v-model.number="list.quantity" style="width:45px">
+                        <i class="far fa-minus-square" @click="lessproduct(index)"></i>
+                        <span style="color:red"><i class="fas fa-trash-alt" @click="removeproduct(index)"></i></span>
+                      </td>
+                      <td>{{list.price + "€" }}</td>
+                    </tbody>
+                  </table>
+                </div>
+                <div v-else> Votre panier est vide</div>
 
-            </div>
-            <div class="modal-footer">
-              <p>Total : <span style="color:rgb(46,183,235);font-weight:bolder">{{ total + "€" }}</span></p>
+              </div>
+              <div class="modal-footer">
+                <p>Total : <span style="color:rgb(46,183,235);font-weight:bolder">{{ total + "€" }}</span></p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
     </div>
   </div>
 
 
 </body>
 <script src="main.js"></script>
-  </html>
+
+</html>

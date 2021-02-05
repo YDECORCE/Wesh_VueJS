@@ -18,6 +18,7 @@ let products = new Vue({
       
     }
   },
+  
   computed: {
     sortedArray(){
         let tempInfo=this.info

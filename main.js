@@ -23,6 +23,7 @@ let products = new Vue({
     sortedArray(){
         let tempInfo=this.info
         if (this.search != '' && this.search) {
+          this.inpageproduct=true
           tempInfo = tempInfo.filter((item) => {
             return ((item.title
               .toUpperCase()
@@ -32,11 +33,13 @@ let products = new Vue({
             })
         }
         if(this.categoryfilter !="" && this.categoryfilter){
+          this.inpageproduct=true
           tempInfo = tempInfo.filter((item) => {
             return (item.category===this.categoryfilter)
           })
         }
         if(this.pricefilter !="" && this.pricefilter){
+          this.inpageproduct=true
           tempInfo = tempInfo.filter((item) => {
             switch (this.pricefilter){
               case "10":

@@ -78,7 +78,7 @@
                       <div v-bind:id="'card'+index" class="card" @mouseover="mouseover(index)"
                         @mouseout="mouseout(index)">
                         <div class="image p-3">
-                          <img v-bind:src=product.image alt="image" style="max-width:80%; height:80%">
+                          <img v-bind:src=product.image alt="image" style="max-width:80%; height:80% ">
                         </div>
                         <div class="title">{{product.title | subStr50}}</div>
                         <div class="price">{{product.price + " €"}}</div>
@@ -93,7 +93,7 @@
                 </section>
                 <!-- si pas de produit à afficher -->
                 <section v-else>
-                  <p> Pas de produit pour votre sélection</p>
+                  <h2 style="text-align:center"> Désolé, aucun produit ne correspond à votre sélection</h2>
                 </section>
              </div>
             </template>
@@ -160,6 +160,7 @@
                         <span style="color:red"><i class="fas fa-trash-alt" @click="removeproduct(index)"></i></span>
                       </td>
                       <td>{{list.price + "€" }}</td>
+                      
                     </tbody>
                   </table>
                 </div>
